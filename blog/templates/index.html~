@@ -1,0 +1,94 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    <meta charset="utf-8" />
+    <link href="{% static "favicon.ico" %}" rel="shortcut icon">
+    <link rel="stylesheet" type="text/css" href="{% static "mystyle.css"  %}">
+    <script src="{% static "button.js" %}"></script>
+    <title>Project</title>  
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+
+<body bgcolor="#dadada"> 
+<h1 align="center" > TEACH.ME </h1>
+
+<div class="light" align="center">
+<form type="get" action="/search/">
+	<span><input type="text" class="search rounded" name="q" placeholder="What do you want to learn today?"><button type="submit" class>Search</button></span>
+</form>
+</div>
+     <br />
+	<div class = "text">					
+	<label >Search Results for "{{ search_term }}"</label>
+	</div>
+     <hr />
+     <h2>Youtube</h2>
+     
+    <table cellspacing="10">
+        {% for video in youtube %}    	
+
+    	<tr>
+    		<td align = "center"> <a href={{ video.url }}><img src={{ video.thumbnail }}></a></td>
+    		<td>
+    			<table class = "inner_table">
+    				<tr class = "top_left" >
+    					<a href={{ video.url }}>{{ video.title }}</a>
+    				</tr>
+    				<tr class = "bottom_left" align = "left">
+    					<p align>{{ video.description }}</p>
+    				</tr>
+    			</table>
+    		</td>
+    	</tr>
+	{% endfor %}
+    </table>
+    <hr />
+    <h2>Courses</h2>
+    <table cellspacing="10">
+        {% for course in courses %}
+
+    	<tr>
+		<td align = "center">
+    		{% if course.site|stringformat:"s" == "Coursera" %}
+			<a href={{ course.url }}><img src="{% static "coursera.jpeg" %}" width = 120, height=100></a>
+		{% else %}
+			<a href={{ course.url }}><img src="{% static "khan.jpeg" %}" width = 120, height=100></a>
+		{% endif %}
+		</td>
+    		<td>
+    			<table class = "inner_table" cellspacing = "5">
+    				<tr class = "top_left" >
+    					<a href={{ course.url }}>{{ course.name }}</a>
+    				</tr>
+				<tr>
+					<div class = "text">					
+					<label>Rating: {{ course.rating }} stars </label>
+					</div>
+				</tr>
+				<tr>
+					<div class = "text">					
+					{% if course.level == 1 %}
+					<label>Level: Beginner</label>
+					{% elif course.level == 2 %}
+					<label>Level: Intermediate</label>
+					{% else %}
+					<label>Level: Advanced</label>
+					{% endif %}
+					</div>
+				</tr>
+    				<tr class = "bottom_left" align = "left">
+    					<p align>{{ course.description }}</p>
+    				</tr>
+    			</table>
+    		</td>
+    	</tr>
+	{% endfor %}
+    </table>     
+
+</body>
+</html>
